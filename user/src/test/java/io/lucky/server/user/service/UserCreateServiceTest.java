@@ -1,5 +1,6 @@
 package io.lucky.server.user.service;
 
+import io.lucky.server.user.entity.UserEntity;
 import io.lucky.server.user.service.dto.UserCreateForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 class UserCreateServiceTest {
-
     @Autowired
     private UserCreateService userCreateService;
+    @Autowired
+    private UserSimpleQuery userSimpleQuery;
 
     @Test
     @DisplayName("유저 생성")
@@ -27,9 +29,16 @@ class UserCreateServiceTest {
 
         // when
         Long savedId = userCreateService.create(form);
+        UserEntity entity = userSimpleQuery.findByIdOrThrow(savedId);
 
         // then
         assertThat(savedId).isNotNull();
+        assertThat(entity.getId()).isNotNull();
+        assertThat(entity.getEmail()).isEqualTo(TestUtil.USER_EMAIL);
+        assertThat(entity.getNickname()).isEqualTo(TestUtil.USER_NICKNAME);
+        assertThat(entity.getPassword()).isEqualTo(TestUtil.USER_PASSWORD);
+        assertThat(entity.getCreateTime()).isNotNull();
+        assertThat(entity.getLastModifiedTime()).isNotNull();
     }
 
     @Test
@@ -46,9 +55,9 @@ class UserCreateServiceTest {
 
     private UserCreateForm getUserCreateForm() {
         UserCreateForm form = new UserCreateForm();
-        form.setEmail("test@gmail.com");
-        form.setNickname("testNickName");
-        form.setPassword("testPassword");
+        form.setEmail(TestUtil.USER_EMAIL);
+        form.setNickname(TestUtil.USER_NICKNAME);
+        form.setPassword(TestUtil.USER_PASSWORD);
         return form;
     }
 }

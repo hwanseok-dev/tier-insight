@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserQuery {
+public class UserSimpleQuery {
 
     private final UserRepository userRepository;
     public UserEntity findByIdOrThrow(Long userId) {
