@@ -1,0 +1,3 @@
+rootProject.name = 'tier-insight'
+include 'user'
+
