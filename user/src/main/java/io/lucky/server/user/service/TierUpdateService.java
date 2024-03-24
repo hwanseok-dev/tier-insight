@@ -3,7 +3,7 @@ package io.lucky.server.user.service;
 import io.lucky.server.user.entity.Tier;
 import io.lucky.server.user.entity.TierKey;
 import io.lucky.server.user.entity.TierValue;
-import io.lucky.server.user.entity.User;
+import io.lucky.server.user.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class UserUpdateService {
-    private final UserSimpleQuery userSimpleQuery;
+public class TierUpdateService {
+    private final MemberSimpleQuery memberSimpleQuery;
     private final TierSimpleQuery tierSimpleQuery;
-    public boolean addTier(Long userId, TierKey key, TierValue value) {
-        User user = userSimpleQuery.findByIdOrThrow(userId);
+    public boolean addTier(Long memberId, TierKey key, TierValue value) {
+        Member member = memberSimpleQuery.findOneByIdOrThrow(memberId);
         Tier tier = tierSimpleQuery.findByIdOrThrow(key, value);
-        user.addTier(tier);
+        member.addTier(tier);
         return true;
     }
 
-    public boolean removeTier(Long userId, TierKey key, TierValue value) {
-        User user = userSimpleQuery.findByIdOrThrow(userId);
+    public boolean removeTier(Long memberId, TierKey key, TierValue value) {
+        Member member = memberSimpleQuery.findOneByIdOrThrow(memberId);
         Tier tier = tierSimpleQuery.findByIdOrThrow(key, value);
-        user.removeTier(tier);
+        member.removeTier(tier);
         return true;
     }
 }

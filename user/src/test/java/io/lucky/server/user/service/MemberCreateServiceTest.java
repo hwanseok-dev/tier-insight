@@ -1,6 +1,6 @@
 package io.lucky.server.user.service;
 
-import io.lucky.server.user.entity.User;
+import io.lucky.server.user.entity.Member;
 import io.lucky.server.user.exception.BusinessException;
 import io.lucky.server.user.service.dto.UserCreateForm;
 import org.assertj.core.api.Assertions;
@@ -8,18 +8,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class UserCreateServiceTest {
+class MemberCreateServiceTest {
     @Autowired
-    private UserCreateService userCreateService;
+    private MemberCreateService memberCreateService;
     @Autowired
-    private UserSimpleQuery userSimpleQuery;
+    private MemberSimpleQuery memberSimpleQuery;
 
     @Test
     @DisplayName("유저 생성")
@@ -28,8 +27,8 @@ class UserCreateServiceTest {
         UserCreateForm form = getUserCreateForm();
 
         // when
-        Long savedId = userCreateService.create(form);
-        User entity = userSimpleQuery.findByIdOrThrow(savedId);
+        Long savedId = memberCreateService.create(form);
+        Member entity = memberSimpleQuery.findOneByIdOrThrow(savedId);
 
         // then
         assertThat(savedId).isNotNull();
@@ -46,10 +45,10 @@ class UserCreateServiceTest {
     void uniqueEmail() {
         // given
         UserCreateForm form = getUserCreateForm();
-        userCreateService.create(form);
+        memberCreateService.create(form);
 
         // when then
-        Assertions.assertThatThrownBy(() -> userCreateService.create(form))
+        Assertions.assertThatThrownBy(() -> memberCreateService.create(form))
                 .isInstanceOf(BusinessException.class);
     }
 

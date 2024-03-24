@@ -12,10 +12,10 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "User")
-public class User extends BaseEntity {
+@Table(name = "Member")
+public class Member extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
     @Column(unique = true, nullable = false)
@@ -26,23 +26,33 @@ public class User extends BaseEntity {
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @OneToMany
     private Set<Tier> tierSet = new HashSet<>();
 
-    public static User newInstance(String email,
-                                   String nickname,
-                                   String password){
-        return new User(null, email, nickname, password);
+    public static Member newInstance(String email,
+                                     String nickname,
+                                     String password){
+        return new Member(null, email, nickname, password);
     }
 
-    private User(Long id, String email, String nickname, String password) {
+    private Member(Long id, String email, String nickname, String password) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public void addTeam(Team team){
+        Assert.notNull(team, "Group must be not null");
+        this.team = team;
+    }
+
+    public void removeTeam(Team team) {
+        Assert.isTrue(this.team == team, "Group must be equal");
+        this.team = null;
     }
 
     public void addTier(Tier tier){

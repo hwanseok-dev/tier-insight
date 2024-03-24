@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 })
 public class Tier extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "tier_id")
     private Long id;
 

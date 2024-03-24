@@ -1,6 +1,6 @@
 package io.lucky.server.user.service;
 
-import io.lucky.server.user.entity.Group;
+import io.lucky.server.user.entity.Team;
 import io.lucky.server.user.exception.BusinessException;
 import io.lucky.server.user.repository.GroupRepository;
 import io.lucky.server.user.service.dto.GroupCreateForm;
@@ -22,8 +22,8 @@ public class GroupCreateService {
         if (existsByName) {
             throw new BusinessException("Name is already in use.");
         }
-        Group group = Group.newInstance(form.getName());
-        Group saved = groupRepository.save(group);
+        Team team = Team.newInstance(form.getName());
+        Team saved = groupRepository.save(team);
         log.info("msg : {}, id : {}, name : {}", "create group", saved.getId(), saved.getName());
         return saved.getId();
     }

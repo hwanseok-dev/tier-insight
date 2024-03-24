@@ -1,9 +1,9 @@
 package io.lucky.server.user.service;
 
+import io.lucky.server.user.entity.Member;
 import io.lucky.server.user.entity.Tier;
 import io.lucky.server.user.entity.TierKey;
 import io.lucky.server.user.entity.TierValue;
-import io.lucky.server.user.entity.User;
 import io.lucky.server.user.service.dto.UserCreateForm;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -15,16 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class UserUpdateServiceTest {
+class TierUpdateServiceTest {
 
     @Autowired
-    private UserCreateService userCreateService;
+    private MemberSimpleQuery memberSimpleQuery;
     @Autowired
-    private UserSimpleQuery userSimpleQuery;
+    private TierUpdateService tierUpdateService;
     @Autowired
-    private UserUpdateService userUpdateService;
-    @Autowired
-    private TierCreateService tierCreateService;
+    private MemberCreateService memberCreateService;
     @Autowired
     private TierSimpleQuery tierSimpleQuery;
     @Autowired
@@ -33,42 +31,42 @@ class UserUpdateServiceTest {
     @BeforeEach
     void init(){
         UserCreateForm form = getUserCreateForm();
-        userCreateService.create(form);
+        memberCreateService.create(form);
     }
 
     @Test
     void addTier() {
         // given
-        User user = userSimpleQuery.findByEmailOrThrow(TestUtil.USER_EMAIL);
+        Member member = memberSimpleQuery.findOneByEmailOrThrow(TestUtil.USER_EMAIL);
 
         // when
-        userUpdateService.addTier(user.getId(), TierKey.JAVA, TierValue.BRONZE);
+        tierUpdateService.addTier(member.getId(), TierKey.JAVA, TierValue.BRONZE);
         em.flush();
         em.clear();
 
         // then
-        User userWithTier = userSimpleQuery.findByEmailOrThrow(TestUtil.USER_EMAIL);
-        Assertions.assertThat(userWithTier.getTierSet().size()).isEqualTo(1);
+        Member memberWithTier = memberSimpleQuery.findOneByEmailOrThrow(TestUtil.USER_EMAIL);
+        Assertions.assertThat(memberWithTier.getTierSet().size()).isEqualTo(1);
     }
 
     @Test
     void removeTier() {
         // given
-        User user = userSimpleQuery.findByEmailOrThrow(TestUtil.USER_EMAIL);
-        userUpdateService.addTier(user.getId(), TierKey.JAVA, TierValue.BRONZE);
+        Member member = memberSimpleQuery.findOneByEmailOrThrow(TestUtil.USER_EMAIL);
+        tierUpdateService.addTier(member.getId(), TierKey.JAVA, TierValue.BRONZE);
         em.flush();
         em.clear();
 
         // when
-        User userWithTier = userSimpleQuery.findByEmailOrThrow(TestUtil.USER_EMAIL);
+        Member memberWithTier = memberSimpleQuery.findOneByEmailOrThrow(TestUtil.USER_EMAIL);
         Tier tier = tierSimpleQuery.findByIdOrThrow(TierKey.JAVA, TierValue.BRONZE);
-        userWithTier.removeTier(tier);
+        memberWithTier.removeTier(tier);
         em.flush();
         em.clear();
 
         // then
-        userWithTier = userSimpleQuery.findByEmailOrThrow(TestUtil.USER_EMAIL);
-        Assertions.assertThat(userWithTier.getTierSet().size()).isEqualTo(0);
+        memberWithTier = memberSimpleQuery.findOneByEmailOrThrow(TestUtil.USER_EMAIL);
+        Assertions.assertThat(memberWithTier.getTierSet().size()).isEqualTo(0);
     }
 
     private UserCreateForm getUserCreateForm() {

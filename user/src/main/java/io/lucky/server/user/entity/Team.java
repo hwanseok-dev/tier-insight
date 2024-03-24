@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "Group")
-public class Group extends BaseEntity {
+@Table(name = "Team")
+public class Team extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "team_id")
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
 
-    public static Group newInstance(String name){
-        return new Group(null, name);
+    public static Team newInstance(String name){
+        return new Team(null, name);
     }
 
-    private Group(Long id, String name) {
+    private Team(Long id, String name) {
         this.id = id;
         this.name = name;
     }
