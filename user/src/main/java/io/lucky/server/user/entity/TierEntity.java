@@ -15,15 +15,21 @@ public class TierEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(value = EnumType.STRING)
+    @Column(columnDefinition = "varchar(255)")
     private TierKey tierKey;
+
     @Enumerated(value = EnumType.STRING)
+    @Column(columnDefinition = "varchar(255)")
     private TierValue tierValue;
 
-    public TierEntity(Long idOrNull,
-                      TierKey tierKey,
-                      TierValue tierValue) {
-        this.id = idOrNull;
+    public static TierEntity newInstance(TierKey key, TierValue value) {
+        return new TierEntity(null, key, value);
+    }
+
+    private TierEntity(Long id, TierKey tierKey, TierValue tierValue) {
+        this.id = id;
         this.tierKey = tierKey;
         this.tierValue = tierValue;
     }

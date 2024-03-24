@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,5 +35,15 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public void addTier(TierEntity tier){
+        Assert.isTrue(!tierSet.contains(tier), "You can only add tiers that have not been added");
+        tierSet.add(tier);
+    }
+
+    public void removeTier(TierEntity tier){
+        Assert.isTrue(tierSet.contains(tier), "You can only remove tiers that have been added");
+        tierSet.remove(tier);
     }
 }

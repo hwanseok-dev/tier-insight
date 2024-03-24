@@ -6,6 +6,7 @@ public class TestUtil {
     public static final String USER_NICKNAME = "testNickName";
     public static final String USER_PASSWORD = "testPassword";
 
+
     private TestUtil() {
     }
 

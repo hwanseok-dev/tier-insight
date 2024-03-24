@@ -18,7 +18,8 @@ public class UserCreateService {
     public Long create(UserCreateForm form) {
         UserEntity entity = UserEntity.newInstance(form.getEmail(), form.getNickname(), form.getPassword());
         UserEntity saved = userRepository.save(entity);
-        log.info("id : {}, email : {}, nickname : {}", saved.getId(), saved.getEmail(), saved.getNickname());
+        log.info("msg : {}, id : {}, email : {}, nickname : {}",
+                "create user", saved.getId(), saved.getEmail(), saved.getNickname());
         return saved.getId();
     }
 }

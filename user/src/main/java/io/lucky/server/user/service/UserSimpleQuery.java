@@ -17,4 +17,12 @@ public class UserSimpleQuery {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(UserEntity.class, userId));
     }
+
+    public UserEntity findByEmailOrThrow(String email){
+        return userRepository.findOneByEmail(email)
+                .orElseThrow(() -> {
+                    log.info("msg : {}, email : {}", "user not found", email);
+                    return new EntityNotFoundException(UserEntity.class);
+                });
+    }
 }
