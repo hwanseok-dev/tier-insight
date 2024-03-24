@@ -1,6 +1,6 @@
 package io.lucky.server.user.service;
 
-import io.lucky.server.user.entity.UserEntity;
+import io.lucky.server.user.entity.User;
 import io.lucky.server.user.exception.EntityNotFoundException;
 import io.lucky.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +13,20 @@ import org.springframework.stereotype.Service;
 public class UserSimpleQuery {
 
     private final UserRepository userRepository;
-    public UserEntity findByIdOrThrow(Long userId) {
+    public User findByIdOrThrow(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(UserEntity.class, userId));
+                .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
     }
 
-    public UserEntity findByEmailOrThrow(String email){
+    public User findByEmailOrThrow(String email){
         return userRepository.findOneByEmail(email)
                 .orElseThrow(() -> {
                     log.info("msg : {}, email : {}", "user not found", email);
-                    return new EntityNotFoundException(UserEntity.class);
+                    return new EntityNotFoundException(User.class);
                 });
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
     }
 }

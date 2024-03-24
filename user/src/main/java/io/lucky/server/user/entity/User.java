@@ -13,9 +13,10 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "User")
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     @Column(unique = true, nullable = false)
     private String email;
@@ -23,28 +24,33 @@ public class UserEntity extends BaseEntity {
     private String nickname;
     @Column(nullable = false)
     private String password;
-    @OneToMany
-    private Set<TierEntity> tierSet = new HashSet<>();
 
-    public static UserEntity newInstance(String email,
-                                         String nickname,
-                                         String password){
-        return new UserEntity(null, email, nickname, password);
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
+    @OneToMany
+    private Set<Tier> tierSet = new HashSet<>();
+
+    public static User newInstance(String email,
+                                   String nickname,
+                                   String password){
+        return new User(null, email, nickname, password);
     }
 
-    private UserEntity(Long id, String email, String nickname, String password) {
+    private User(Long id, String email, String nickname, String password) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
     }
 
-    public void addTier(TierEntity tier){
+    public void addTier(Tier tier){
         Assert.isTrue(!tierSet.contains(tier), "You can only add tiers that have not been added");
         tierSet.add(tier);
     }
 
-    public void removeTier(TierEntity tier){
+    public void removeTier(Tier tier){
         Assert.isTrue(tierSet.contains(tier), "You can only remove tiers that have been added");
         tierSet.remove(tier);
     }

@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "Tier", uniqueConstraints = {
         @UniqueConstraint(name = "UNIQUE_KEY_VALUE", columnNames = {"tierKey", "tierValue"})
 })
-public class TierEntity extends BaseEntity {
+public class Tier extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tier_id")
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
@@ -24,11 +25,11 @@ public class TierEntity extends BaseEntity {
     @Column(columnDefinition = "varchar(255)")
     private TierValue tierValue;
 
-    public static TierEntity newInstance(TierKey key, TierValue value) {
-        return new TierEntity(null, key, value);
+    public static Tier newInstance(TierKey key, TierValue value) {
+        return new Tier(null, key, value);
     }
 
-    private TierEntity(Long id, TierKey tierKey, TierValue tierValue) {
+    private Tier(Long id, TierKey tierKey, TierValue tierValue) {
         this.id = id;
         this.tierKey = tierKey;
         this.tierValue = tierValue;

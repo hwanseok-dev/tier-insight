@@ -1,6 +1,6 @@
 package io.lucky.server.user.service;
 
-import io.lucky.server.user.entity.TierEntity;
+import io.lucky.server.user.entity.Tier;
 import io.lucky.server.user.entity.TierKey;
 import io.lucky.server.user.entity.TierValue;
 import io.lucky.server.user.repository.TierRepository;
@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class TierCreateService {
     private final TierRepository tierRepository;
     public Long create(TierKey key, TierValue value) {
-        TierEntity entity = TierEntity.newInstance(key, value);
-        TierEntity saved = tierRepository.save(entity);
+        Tier entity = Tier.newInstance(key, value);
+        Tier saved = tierRepository.save(entity);
         log.info("msg : {}, id : {}, key : {}, value : {}",
                 "create tier", saved.getId(), saved.getTierKey(), saved.getTierValue());
         return saved.getId();

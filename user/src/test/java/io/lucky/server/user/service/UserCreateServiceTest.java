@@ -1,12 +1,12 @@
 package io.lucky.server.user.service;
 
-import io.lucky.server.user.entity.UserEntity;
+import io.lucky.server.user.entity.User;
+import io.lucky.server.user.exception.BusinessException;
 import io.lucky.server.user.service.dto.UserCreateForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ class UserCreateServiceTest {
 
         // when
         Long savedId = userCreateService.create(form);
-        UserEntity entity = userSimpleQuery.findByIdOrThrow(savedId);
+        User entity = userSimpleQuery.findByIdOrThrow(savedId);
 
         // then
         assertThat(savedId).isNotNull();
@@ -50,7 +50,7 @@ class UserCreateServiceTest {
 
         // when then
         Assertions.assertThatThrownBy(() -> userCreateService.create(form))
-                .isInstanceOf(DataAccessException.class);
+                .isInstanceOf(BusinessException.class);
     }
 
     private UserCreateForm getUserCreateForm() {
