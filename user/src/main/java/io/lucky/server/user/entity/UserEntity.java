@@ -17,9 +17,11 @@ public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String nickname;
+    @Column(nullable = false)
     private String password;
     @OneToMany
     private Set<TierEntity> tierSet = new HashSet<>();
